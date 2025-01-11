@@ -68,7 +68,7 @@ return [
             'username' => env('ODBC_USERNAME'),
             'password' => env('ODBC_PASSWORD'),
             'options' => [
-                // Opções de conexão ODBC (opcional)
+                PDO::ATTR_CASE => PDO::CASE_NATURAL,
             ],
         ],
 
