@@ -24,7 +24,7 @@ class ImportTables extends Command
 
         try {
             $odbc = DB::connection('odbc');
-            $tables = $odbc->select("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'");
+            $tables = $odbc->getSchemaBuilder()->getAllTables();
 
             $this->info('Found ' . count($tables) . ' tables.');
 
