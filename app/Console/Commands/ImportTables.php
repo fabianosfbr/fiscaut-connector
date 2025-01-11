@@ -24,9 +24,7 @@ class ImportTables extends Command
      */
     public function handle()
     {
-        $dsn = 'Contabil'; // Nome do DSN configurado no ODBC Data Source Administrator
-        $username = 'FISCAUT'; // Usuário
-        $password = '1234'; // Senha
+
         $tableName = 'bethadba.geempre';
 
         $config = Config::get('database.connections.odbc');
