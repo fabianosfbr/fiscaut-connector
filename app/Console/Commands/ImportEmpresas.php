@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Empresa;
 use PDO;
 use Exception;
 use PDOException;
@@ -11,24 +10,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 
-class ImportTables extends Command
+class ImportEmpresas extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:tables';
-    protected $description = 'Import tables from Dominio ODBC to Fiscaut Connector';
+    protected $signature = 'import:empresas';
+    protected $description = 'Import empresas from Dominio ODBC to Fiscaut Connector';
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->info('Connecting to ODBC database...');
+
+        $tableName = 'bethadba.geempre';
 
         $config = Config::get('database.connections.odbc');
-        $tablePrefix = $config['database'];
 
         try {
             $pdo = new PDO("odbc:{$config['dsn']}", $config['username'], $config['password']);
@@ -36,19 +35,16 @@ class ImportTables extends Command
 
 
             // Consulta para obter os dados da tabela específica
-            $query = $pdo->query("SELECT * FROM SYS.SYSTABLE WHERE table_type = 'BASE'");
+            $query = $pdo->query("SELECT TOP 5 * FROM $tableName");
             if ($query) {
-                echo "Consulta SYS.SYSTABLE executada com sucesso!\n";
-                echo "Tabelas:\n";
+                echo "Consulta da tabela $tableName executada com sucesso!\n";
+                echo "Dados:\n";
                 foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-
-                    Empresa::updateOrCreate(
-                        ['table_name' => $row['table_name']],
-                        ['table_name' => $tablePrefix . '.' . $row['table_name'], 'count_rows' => $row['count'], 'sync' => false]
-                    );
+                    print_r($row);
+                    echo "\n";
                 }
             } else {
-                echo "Erro ao executar consulta SYS.SYSTABLE: " . $pdo->errorInfo()[2] . "\n";
+                echo "Erro ao executar consulta na tabela $tableName: " . $pdo->errorInfo()[2] . "\n";
             }
 
             // Fecha a conexão

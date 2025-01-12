@@ -67,7 +67,7 @@ return [
             'dsn'      => env('ODBC_DSN'),
             'username' => env('ODBC_USERNAME'),
             'password' => env('ODBC_PASSWORD'),
-            'database' => '',
+            'database' => env('ODBC_DATABASE'),
             'options' => [
                 PDO::ATTR_CASE => PDO::CASE_NATURAL,
             ],
