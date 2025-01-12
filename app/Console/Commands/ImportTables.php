@@ -38,9 +38,9 @@ class ImportTables extends Command
             // Consulta para obter os dados da tabela específica
             $query = $pdo->query("SELECT * FROM SYS.SYSTABLE WHERE table_type = 'BASE'");
             if ($query) {
-                echo "Consulta SYS.SYSTABLE executada com sucesso!\n";
-                echo "Tabelas:\n";
+
                 foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                    $this->info('Tabela: ' . $row['table_name'] . ' Nº de registros: ' . $row['count']);
 
                     Empresa::updateOrCreate(
                         ['table_name' => $row['table_name']],
