@@ -55,10 +55,12 @@ class TabelaResource extends Resource
             ->columns([
                 TextColumn::make('table_name')
                     ->label('Nome da tabela')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('table_description')
                     ->label('Descrição da tabela')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('count_rows')
                     ->label('Nº de registros'),
                 IconColumn::make('sync')
