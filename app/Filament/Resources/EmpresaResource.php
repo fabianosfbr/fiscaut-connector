@@ -73,7 +73,7 @@ class EmpresaResource extends Resource
     {
         return [
             'index' => Pages\ListEmpresas::route('/'),
-            'create' => Pages\CreateEmpresa::route('/create'),
+          //  'create' => Pages\CreateEmpresa::route('/create'),
             'edit' => Pages\EditEmpresa::route('/{record}/edit'),
         ];
     }
