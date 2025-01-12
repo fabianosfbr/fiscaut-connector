@@ -36,6 +36,7 @@ class EmpresaResource extends Resource
         return $table
             ->searchDebounce('750ms')
             ->searchPlaceholder('Buscar (ID, Nome)')
+            ->recordUrl(null)
             ->columns([
                 TextColumn::make('codi_emp')
                     ->label('Cod. Domínio')
