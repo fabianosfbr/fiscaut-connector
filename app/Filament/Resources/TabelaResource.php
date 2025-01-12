@@ -20,7 +20,10 @@ class TabelaResource extends Resource
 {
     protected static ?string $model = Tabela::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-4';
+
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

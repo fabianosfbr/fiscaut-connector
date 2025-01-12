@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use PDO;
 use Exception;
 use PDOException;
+use App\Models\Empresa;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
@@ -37,11 +38,17 @@ class ImportEmpresas extends Command
             // Consulta para obter os dados da tabela específica
             $query = $pdo->query("SELECT TOP 5 * FROM $tableName");
             if ($query) {
-                echo "Consulta da tabela $tableName executada com sucesso!\n";
-                echo "Dados:\n";
+
+                $this->info('Consulta da tabela {$tableName} executada com sucesso!');
+
                 foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                    print_r($row);
-                    echo "\n";
+
+                    $this->info('Empresa: ' . $row['nome_emp'] . ' Código: ' . $row['cod_emp']);
+                    Empresa::updateOrCreate(
+                        ['cod_emp' => $row['cod_emp']],
+                        $row
+                    );
+
                 }
             } else {
                 echo "Erro ao executar consulta na tabela $tableName: " . $pdo->errorInfo()[2] . "\n";
