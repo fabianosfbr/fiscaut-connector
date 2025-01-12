@@ -42,7 +42,7 @@ class ImportEmpresas extends Command
                 $this->info('Consulta da tabela {$tableName} executada com sucesso!');
 
                 foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-                    dd($row);
+
                     $this->info('Empresa: ' . $row['nome_emp'] . ' Código: ' . $row['codi_emp']);
                     Empresa::updateOrCreate(
                         ['codi_emp' => $row['codi_emp']],

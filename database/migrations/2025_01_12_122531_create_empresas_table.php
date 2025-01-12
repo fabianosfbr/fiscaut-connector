@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('nome_emp');
             $table->string('apel_emp');
             $table->string('cgce_emp');
-            $table->integer('iest_emp');
+            $table->string('iest_emp');
             $table->integer('imun_emp');
             $table->integer('codi_emp');
-            $table->integer('esta_emp');
+            $table->string('esta_emp', 2);
             $table->integer('cod_municipio');
             $table->timestamps();
         });
