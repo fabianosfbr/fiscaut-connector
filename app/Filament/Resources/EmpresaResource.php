@@ -34,18 +34,19 @@ class EmpresaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->searchDebounce('750ms')
             ->columns([
                 TextColumn::make('codi_emp')
-                ->label('Cod. Domínio'),
+                    ->label('Cod. Domínio'),
                 TextColumn::make('razao_emp')
-                ->label('Nome da empresa')
-                ->searchable(),
+                    ->label('Nome da empresa')
+                    ->searchable(),
                 TextColumn::make('cgce_emp')
-                ->label('CNPJ'),
+                    ->label('CNPJ'),
                 TextColumn::make('iest_emp')
-                ->label('IE'),
+                    ->label('IE'),
                 TextColumn::make('imun_emp')
-                ->label('IM'),
+                    ->label('IM'),
 
 
             ])
@@ -53,7 +54,7 @@ class EmpresaResource extends Resource
                 //
             ])
             ->actions([
-              //  Tables\Actions\EditAction::make(),
+                //  Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([]);
     }
