@@ -36,19 +36,20 @@ class ImportEmpresas extends Command
 
 
             // Consulta para obter os dados da tabela específica
-            $query = $pdo->query("SELECT TOP 5 * FROM $tableName");
+            $query = $pdo->query("SELECT * FROM $tableName");
             if ($query) {
 
                 $this->info('Consulta da tabela {$tableName} executada com sucesso!');
 
                 foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 
-                    $this->info(print_r($row, true));
+
+                    $this->info('Empresa: ' . $row['razao_emp'] . ' Código: ' . $row['codi_emp']);
+
                     Empresa::updateOrCreate(
-                        ['nome_emp' => $row['nome_emp']],
+                        ['codi_emp' => $row['codi_emp']],
                         $row
                     );
-
                 }
             } else {
                 echo "Erro ao executar consulta na tabela $tableName: " . $pdo->errorInfo()[2] . "\n";
@@ -60,4 +61,6 @@ class ImportEmpresas extends Command
             echo "Erro ao conectar via ODBC: " . $e->getMessage();
         }
     }
+
+
 }

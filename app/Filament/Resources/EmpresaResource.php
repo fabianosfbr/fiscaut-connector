@@ -35,7 +35,7 @@ class EmpresaResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nome_emp')
+                TextColumn::make('razao_emp')
                 ->label('Nome da empresa'),
                 TextColumn::make('cgce_emp')
                 ->label('CNPJ'),
@@ -43,7 +43,7 @@ class EmpresaResource extends Resource
                 ->label('IE'),
                 TextColumn::make('imun_emp')
                 ->label('IM'),
-                TextColumn::make('cod_emp')
+                TextColumn::make('codi_emp')
                 ->label('Cod. Domínio'),
 
             ])
