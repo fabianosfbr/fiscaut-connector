@@ -54,9 +54,11 @@ class TabelaResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('table_name')
-                    ->label('Nome da tabela'),
+                    ->label('Nome da tabela')
+                    ->searchable(),
                 TextColumn::make('table_description')
-                    ->label('Descrição da tabela'),
+                    ->label('Descrição da tabela')
+                    ->searchable(),
                 TextColumn::make('count_rows')
                     ->label('Nº de registros'),
                 IconColumn::make('sync')
@@ -69,11 +71,7 @@ class TabelaResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
