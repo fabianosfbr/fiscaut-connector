@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('cgce_emp');
             $table->integer('iest_emp');
             $table->integer('imun_emp');
-            $table->integer('cod_emp');
+            $table->integer('codi_emp');
             $table->integer('esta_emp');
             $table->integer('cod_municipio');
             $table->timestamps();
