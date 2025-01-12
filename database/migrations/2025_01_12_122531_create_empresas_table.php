@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('apel_emp');
             $table->string('cgce_emp');
             $table->string('iest_emp')->nullable();
-            $table->integer('imun_emp')->nullable();
+            $table->string('imun_emp')->nullable();
             $table->integer('codi_emp');
             $table->string('esta_emp', 2);
             $table->integer('cod_municipio')->nullable();
