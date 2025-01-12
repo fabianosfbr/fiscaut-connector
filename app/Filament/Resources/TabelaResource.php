@@ -26,7 +26,7 @@ class TabelaResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Informações da empresa')
+                Section::make('Detalhes da tabela')
                     ->schema([
                         Forms\Components\TextInput::make('table_name')
                             ->label('Nome da tabela')
@@ -52,13 +52,14 @@ class TabelaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('table_description', 'asc')
             ->columns([
                 TextColumn::make('table_name')
                     ->label('Nome da tabela')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('table_description')
-                    ->label('Descrição da tabela')
+                    ->label('Descrição')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('count_rows')
@@ -87,7 +88,7 @@ class TabelaResource extends Resource
     {
         return [
             'index' => Pages\ListTabelas::route('/'),
-           // 'create' => Pages\CreateTabela::route('/create'),
+            // 'create' => Pages\CreateTabela::route('/create'),
             'edit' => Pages\EditTabela::route('/{record}/edit'),
         ];
     }
