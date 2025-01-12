@@ -35,16 +35,18 @@ class EmpresaResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('codi_emp')
+                ->label('Cod. Domínio'),
                 TextColumn::make('razao_emp')
-                ->label('Nome da empresa'),
+                ->label('Nome da empresa')
+                ->searchable(),
                 TextColumn::make('cgce_emp')
                 ->label('CNPJ'),
                 TextColumn::make('iest_emp')
                 ->label('IE'),
                 TextColumn::make('imun_emp')
                 ->label('IM'),
-                TextColumn::make('codi_emp')
-                ->label('Cod. Domínio'),
+
 
             ])
             ->filters([
