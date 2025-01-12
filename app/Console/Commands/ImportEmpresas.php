@@ -39,10 +39,13 @@ class ImportEmpresas extends Command
             $query = $pdo->query("SELECT * FROM $tableName");
             if ($query) {
 
-                $this->info('Consulta da tabela {$tableName} executada com sucesso!');
 
                 foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 
+
+                  //  $row['razao_emp'] = $this->make_utf8($row['razao_emp']);
+
+                    $this->info(print_r($row));
 
                     $this->info('Empresa: ' . $row['razao_emp'] . ' Código: ' . $row['codi_emp']);
 
@@ -62,5 +65,26 @@ class ImportEmpresas extends Command
         }
     }
 
+    private function make_utf8(string $string)
+    {
+        // Test it and see if it is UTF-8 or not
+        $utf8 = \mb_detect_encoding($string, ["UTF-8"], true);
+
+        if ($utf8 !== false) {
+            return $string;
+        }
+
+        // From now on, it is a safe assumption that $string is NOT UTF-8-encoded
+
+        // The detection strictness (i.e. third parameter) is up to you
+        // You may set it to false to return the closest matching encoding
+        $encoding = \mb_detect_encoding($string, mb_detect_order(), true);
+
+        if ($encoding === false) {
+            throw new \RuntimeException("String encoding cannot be detected");
+        }
+
+        return \mb_convert_encoding($string, "UTF-8", $encoding);
+    }
 
 }
