@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nome_emp');
-            $table->string('apel_emp');
+            $table->string('apel_emp')->nullable();
             $table->string('cgce_emp');
             $table->string('iest_emp')->nullable();
             $table->string('imun_emp')->nullable();
