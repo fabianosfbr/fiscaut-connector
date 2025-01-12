@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Empresa;
+use App\Models\Tabela;
 use PDO;
 use Exception;
 use PDOException;
@@ -42,7 +42,7 @@ class ImportTables extends Command
                 foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
                     $this->info('Tabela: ' . $row['table_name'] . ' Nº de registros: ' . $row['count']);
 
-                    Empresa::updateOrCreate(
+                    Tabela::updateOrCreate(
                         ['table_name' => $row['table_name']],
                         ['table_name' => $tablePrefix . '.' . $row['table_name'], 'count_rows' => $row['count'], 'sync' => false]
                     );
