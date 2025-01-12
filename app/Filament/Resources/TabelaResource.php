@@ -52,7 +52,7 @@ class TabelaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('table_description', 'asc')
+            ->defaultSort('table_description', 'desc')
             ->columns([
                 TextColumn::make('table_name')
                     ->label('Nome da tabela')
