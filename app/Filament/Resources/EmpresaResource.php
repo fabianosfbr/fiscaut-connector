@@ -35,9 +35,11 @@ class EmpresaResource extends Resource
     {
         return $table
             ->searchDebounce('750ms')
+            ->searchPlaceholder('Pesquisar (Cod. Domínio, Nome)');
             ->columns([
                 TextColumn::make('codi_emp')
-                    ->label('Cod. Domínio'),
+                    ->label('Cod. Domínio')
+                    ->searchable(),
                 TextColumn::make('razao_emp')
                     ->label('Nome da empresa')
                     ->searchable(),
