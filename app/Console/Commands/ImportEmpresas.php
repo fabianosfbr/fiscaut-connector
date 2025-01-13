@@ -34,7 +34,6 @@ class ImportEmpresas extends Command
 
         foreach ($rows as $key => $row) {
 
-            dd($row);
             $row->razao_emp = removeCaracteresEspeciais($row->razao_emp);
 
             $this->info('Empresa: ' . $row->razao_emp . ' Código: ' . $row->codi_emp);

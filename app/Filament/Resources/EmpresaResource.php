@@ -42,11 +42,11 @@ class EmpresaResource extends Resource
 
                 Forms\Components\Section::make('Serviços Sincronizados')
                     ->schema([
-                        Forms\Components\Checkbox::make('clientes')
+                        Forms\Components\Checkbox::make('cliente')
                             ->label('Clientes'),
-                        Forms\Components\Checkbox::make(name: 'fornecedores')
+                        Forms\Components\Checkbox::make(name: 'fornecedor')
                             ->label('Fornecedores'),
-                        Forms\Components\Checkbox::make('planocontas')
+                        Forms\Components\Checkbox::make('planoconta')
                             ->label('Plano de Contas'),
                     ])
 

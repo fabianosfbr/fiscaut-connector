@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('cod_mun')->nullable();
             $table->boolean('sync')->default(false);
             $table->boolean('cliente')->default(true);
-            $table->boolean('fornecedores')->default(true);
-            $table->boolean('plano_de_contas')->default(true);
+            $table->boolean('fornecedor')->default(true);
+            $table->boolean('plano_de_conta')->default(true);
             $table->timestamps();
         });
     }

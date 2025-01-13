@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\EmpresaResource\Pages;
 
-use App\Filament\Resources\EmpresaResource;
 use Filament\Actions;
+use Illuminate\Support\Js;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\EmpresaResource;
 
 class EditEmpresa extends EditRecord
 {
@@ -13,8 +15,13 @@ class EditEmpresa extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            $this->getCancelFormAction(),
-            $this->getSaveFormAction(),
+            $this->getCancelFormAction()
+                ->label('Voltar')
+                ->alpineClickHandler('document.referrer ? window.history.back() : (window.location.href = ' . Js::from($this->previousUrl ?? static::getResource()::getUrl()) . ')')
+                ->color('gray'),
+            Action::make('save')
+                ->label('Salvar')
+                ->action('save'),
         ];
     }
 
