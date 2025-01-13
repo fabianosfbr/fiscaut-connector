@@ -8,6 +8,7 @@ use App\Models\Empresa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EmpresaResource\Pages;
@@ -27,7 +28,14 @@ class EmpresaResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('razao_emp')
+                    ->label('Razão Social')
+                    ->disabled(),
+                Forms\Components\TextInput::make('cgce_emp')
+                    ->label('CNPJ/CPF')
+                    ->disabled(),
+                Forms\Components\Toggle::make('sync')
+                    ->label('Habilitar sincronização com Fiscaut')
             ]);
     }
 
@@ -50,6 +58,9 @@ class EmpresaResource extends Resource
                     ->label('IE'),
                 TextColumn::make('imun_emp')
                     ->label('IM'),
+                IconColumn::make('sync')
+                    ->label('Sincroniza com Fiscaut')
+                    ->boolean()
 
 
             ])
@@ -57,7 +68,7 @@ class EmpresaResource extends Resource
                 //
             ])
             ->actions([
-                //  Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([]);
     }
@@ -73,7 +84,7 @@ class EmpresaResource extends Resource
     {
         return [
             'index' => Pages\ListEmpresas::route('/'),
-          //  'create' => Pages\CreateEmpresa::route('/create'),
+            //  'create' => Pages\CreateEmpresa::route('/create'),
             'edit' => Pages\EditEmpresa::route('/{record}/edit'),
         ];
     }

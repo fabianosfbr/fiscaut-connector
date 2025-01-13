@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('imun_emp')->nullable();
             $table->string('codi_emp')->unique();
             $table->string('esta_emp', 2)->nullable();
-            $table->string('cod_municipio')->nullable();
+            $table->string('cod_mun')->nullable();
+            $table->boolean('sync')->default(false);
             $table->timestamps();
         });
     }

@@ -34,14 +34,21 @@ class ImportEmpresas extends Command
 
         foreach ($rows as $key => $row) {
 
-            $row->razao_emp = $this->removeCaracteresEspeciais($row->razao_emp);
+            dd($row);
+            $row->razao_emp = removeCaracteresEspeciais($row->razao_emp);
 
             $this->info('Empresa: ' . $row->razao_emp . ' Código: ' . $row->codi_emp);
 
 
              Empresa::updateOrCreate(
                 ['codi_emp' => $row->codi_emp],
-                ['razao_emp' => $row->razao_emp]
+                [
+                    'razao_emp' => $row->razao_emp,
+                    'cgce_emp' => $row->cgce_emp,
+                    'iest_emp' => $row->iest_emp,
+                    'imun_emp' => $row->imun_emp,
+                    'codi_mun' => $row->codi_mun,
+                ]
             );
         }
 
