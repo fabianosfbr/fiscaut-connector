@@ -26,70 +26,27 @@ class ImportEmpresas extends Command
     public function handle()
     {
 
-        $books = DB::connection('odbc-connection-name')
-        ->table('bethadba.geempre')
-        ->get();
-        dd($books);
-
         $tableName = 'bethadba.geempre';
 
-        $config = Config::get('database.connections.odbc');
+        $rows = DB::connection('odbc')
+        ->table($tableName)
+        ->get();
 
-        try {
-            $pdo = new PDO("odbc:{$config['dsn']}", $config['username'], $config['password']);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        foreach ($rows as $key => $row) {
 
+            $row->razao_emp = $this->removeCaracteresEspeciais($row->razao_emp);
 
-            // Consulta para obter os dados da tabela específica
-            $query = $pdo->query("SELECT * FROM $tableName");
-            if ($query) {
-
-
-                foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $this->info('Empresa: ' . $row->razao_emp . ' Código: ' . $row->codi_emp);
 
 
-                  //  $row['razao_emp'] = $this->make_utf8($row['razao_emp']);
-
-                    $this->info(print_r($row));
-
-                    $this->info('Empresa: ' . $row['razao_emp'] . ' Código: ' . $row['codi_emp']);
-
-                    Empresa::updateOrCreate(
-                        ['codi_emp' => $row['codi_emp']],
-                        $row
-                    );
-                }
-            } else {
-                echo "Erro ao executar consulta na tabela $tableName: " . $pdo->errorInfo()[2] . "\n";
-            }
-
-            // Fecha a conexão
-            $pdo = null;
-        } catch (PDOException $e) {
-            echo "Erro ao conectar via ODBC: " . $e->getMessage();
+             Empresa::updateOrCreate(
+                ['codi_emp' => $row->codi_emp],
+                ['razao_emp' => $row->razao_emp]
+            );
         }
+
+
     }
 
-    private function make_utf8(string $string)
-    {
-        // Test it and see if it is UTF-8 or not
-        $utf8 = \mb_detect_encoding($string, ["UTF-8"], true);
-
-        if ($utf8 !== false) {
-            return $string;
-        }
-
-        // From now on, it is a safe assumption that $string is NOT UTF-8-encoded
-
-        // The detection strictness (i.e. third parameter) is up to you
-        // You may set it to false to return the closest matching encoding
-        $encoding = \mb_detect_encoding($string, mb_detect_order(), true);
-
-        if ($encoding === false) {
-            throw new \RuntimeException("String encoding cannot be detected");
-        }
-
-        return \mb_convert_encoding($string, "UTF-8", $encoding);
-    }
 
 }
