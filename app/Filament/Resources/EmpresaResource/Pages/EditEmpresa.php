@@ -12,6 +12,19 @@ class EditEmpresa extends EditRecord
 
     protected function getHeaderActions(): array
     {
+        return [
+            $this->getCancelFormAction(),
+            $this->getSaveFormAction(),
+        ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+    protected function getFormActions(): array
+    {
         return [];
     }
 }

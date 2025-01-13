@@ -28,14 +28,28 @@ class EmpresaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('razao_emp')
-                    ->label('Razão Social')
-                    ->disabled(),
-                Forms\Components\TextInput::make('cgce_emp')
-                    ->label('CNPJ/CPF')
-                    ->disabled(),
-                Forms\Components\Toggle::make('sync')
-                    ->label('Habilitar sincronização com Fiscaut')
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('razao_emp')
+                            ->label('Razão Social')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('cgce_emp')
+                            ->label('CNPJ/CPF')
+                            ->disabled(),
+                        Forms\Components\Toggle::make('sync')
+                            ->label('Habilitar sincronização com Fiscaut')
+                    ]),
+
+                Forms\Components\Section::make('Serviços Sincronizados')
+                    ->schema([
+                        Forms\Components\Checkbox::make('clientes')
+                            ->label('Clientes'),
+                        Forms\Components\Checkbox::make(name: 'fornecedores')
+                            ->label('Fornecedores'),
+                        Forms\Components\Checkbox::make('planocontas')
+                            ->label('Plano de Contas'),
+                    ])
+
             ]);
     }
 
@@ -45,12 +59,24 @@ class EmpresaResource extends Resource
             ->searchDebounce('750ms')
             ->searchPlaceholder('Buscar (ID, Nome)')
             ->recordUrl(null)
+            ->defaultSort('sync', 'desc')
             ->columns([
                 TextColumn::make('codi_emp')
                     ->label('Cod. Domínio')
                     ->searchable(),
                 TextColumn::make('razao_emp')
                     ->label('Nome da empresa')
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+
+                        if (strlen($state) <= $column->getListLimit()) {
+                            return null;
+                        }
+
+                        // Only render the tooltip if the column contents exceeds the length limit.
+                        return $state;
+                    })
                     ->searchable(),
                 TextColumn::make('cgce_emp')
                     ->label('CNPJ'),
