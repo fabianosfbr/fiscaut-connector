@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 
-class ImportEmpresas extends Command
+class ImportEmpresa extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:empresas';
+    protected $signature = 'import:empresa';
     protected $description = 'Import empresas from Dominio ODBC to Fiscaut Connector';
     /**
      * Execute the console command.

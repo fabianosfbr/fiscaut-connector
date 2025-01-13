@@ -46,7 +46,7 @@ class EmpresaResource extends Resource
                             ->label('Clientes'),
                         Forms\Components\Checkbox::make(name: 'fornecedor')
                             ->label('Fornecedores'),
-                        Forms\Components\Checkbox::make('planoconta')
+                        Forms\Components\Checkbox::make('plano_de_conta')
                             ->label('Plano de Contas'),
                     ])
 
