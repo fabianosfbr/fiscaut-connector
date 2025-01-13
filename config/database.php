@@ -63,7 +63,7 @@ return [
         ],
 
         'odbc' => [
-            'driver'   => 'odbc',
+            'driver'   => 'odbc-connection-name',
             'dsn'      => env('ODBC_DSN'),
             'username' => env('ODBC_USERNAME'),
             'password' => env('ODBC_PASSWORD'),

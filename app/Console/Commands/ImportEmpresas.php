@@ -26,6 +26,11 @@ class ImportEmpresas extends Command
     public function handle()
     {
 
+        $books = DB::connection('odbc-connection-name')
+        ->table('bethadba.geempre')
+        ->get();
+        dd($books);
+
         $tableName = 'bethadba.geempre';
 
         $config = Config::get('database.connections.odbc');
