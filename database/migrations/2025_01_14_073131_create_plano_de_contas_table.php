@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('codi_emp')->index;
             $table->integer('codi_cta');
-            $table->integer('class_cta');
+            $table->integer('clas_cta');
             $table->string('nome_cta');
             $table->timestamps();
         });
