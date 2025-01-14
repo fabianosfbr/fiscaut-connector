@@ -7,27 +7,28 @@ use PDO;
 use Exception;
 use PDOException;
 use App\Models\Empresa;
+use App\Models\Fornecedor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 
-class ImportCliente extends Command
+class ImportFornecedor extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:cliente';
-    protected $description = 'Import clientes from Dominio ODBC to Fiscaut Connector';
+    protected $signature = 'import:fornecedor';
+    protected $description = 'Import fornecedores from Dominio ODBC to Fiscaut Connector';
     /**
      * Execute the console command.
      */
     public function handle()
     {
 
-        $tableName = 'bethadba.efclientes';
+        $tableName = 'bethadba.effornece';
 
         $empresas = Empresa::where('sync', true)
             ->where('cliente', true)
@@ -44,16 +45,16 @@ class ImportCliente extends Command
 
             foreach ($rows as $key => $row) {
 
-                $row->nome_cli = removeCaracteresEspeciais($row->nome_cli);
+                $row->nome_cli = removeCaracteresEspeciais($row->nome_for);
 
-                $this->info('Empresa: ' . $row->nome_cli . ' CNPJ/CPF: ' . $row->cgce_cli);
+                $this->info('Empresa: ' . $row->nome_for . ' CNPJ/CPF: ' . $row->cgce_for);
 
 
-                Cliente::updateOrCreate(
+                Fornecedor::updateOrCreate(
                     ['codi_emp' => $row->codi_emp],
                     [
-                        'nome_cli' => $row->nome_cli,
-                        'cgce_cli' => $row->cgce_cli,
+                        'nome_for' => $row->nome_for,
+                        'cgce_for' => $row->cgce_for,
                     ]
                 );
             }
