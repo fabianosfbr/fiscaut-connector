@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('cgce_emp')->nullable();
             $table->string('iest_emp')->nullable();
             $table->string('imun_emp')->nullable();
-            $table->string('codi_emp')->unique();
+            $table->integer('codi_emp')->unique()->index;
             $table->string('esta_emp', 2)->nullable();
             $table->string('cod_mun')->nullable();
             $table->boolean('sync')->default(false);

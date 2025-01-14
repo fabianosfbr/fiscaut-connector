@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Cliente;
 use PDO;
 use Exception;
 use PDOException;
@@ -28,34 +29,34 @@ class ImportCliente extends Command
 
         $tableName = 'bethadba.efclientes';
 
-        $rows = DB::connection('odbc')
-        ->table($tableName)
-        ->first();
-
-        dd($rows);
-        foreach ($rows as $key => $row) {
-
-            dd($row);
-
-            $row->razao_emp = removeCaracteresEspeciais($row->razao_emp);
-
-            $this->info('Empresa: ' . $row->razao_emp . ' Código: ' . $row->codi_emp);
+        $empresas = Empresa::where('sync', true)
+            ->where('cliente', true)
+            ->get();
 
 
-             Empresa::updateOrCreate(
-                ['codi_emp' => $row->codi_emp],
-                [
-                    'razao_emp' => $row->razao_emp,
-                    'cgce_emp' => $row->cgce_emp,
-                    'iest_emp' => $row->iest_emp,
-                    'imun_emp' => $row->imun_emp,
-                    'codi_mun' => $row->codi_mun,
-                ]
-            );
+        foreach ($empresas as $empresa) {
+
+            $rows = DB::connection('odbc')
+                ->table($tableName)
+                ->where('codi_emp', $empresa->codi_emp)
+                ->get();
+
+
+            foreach ($rows as $key => $row) {
+
+                $this->info('Empresa: ' . $row->nome_cli . ' Código: ' . $row->codi_emp);
+
+
+                Cliente::updateOrCreate(
+                    ['codi_emp' => $row->codi_emp],
+                    [
+                        'nome_cli' => $row->nome_cli,
+                        'cgce_cli' => $row->cgce_cli,
+                    ]
+                );
+            }
         }
 
 
     }
-
-
 }
