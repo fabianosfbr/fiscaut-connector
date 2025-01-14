@@ -4,27 +4,27 @@ namespace App\Console\Commands;
 
 
 use App\Models\Empresa;
-use App\Models\Fornecedor;
+use App\Models\PlanoDeConta;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 
-class ImportFornecedor extends Command
+class ImportPlanoDeConta extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:fornecedor';
-    protected $description = 'Import fornecedores from Dominio ODBC to Fiscaut Connector';
+    protected $signature = 'import:plano-de-conta';
+    protected $description = 'Import plano de contas from Dominio ODBC to Fiscaut Connector';
     /**
      * Execute the console command.
      */
     public function handle()
     {
 
-        $tableName = 'bethadba.effornece';
+        $tableName = 'bethadba.ctcontas';
 
         $empresas = Empresa::where('sync', true)
             ->where('cliente', true)
@@ -41,16 +41,17 @@ class ImportFornecedor extends Command
 
             foreach ($rows as $key => $row) {
 
-                $row->nome_for = removeCaracteresEspeciais($row->nome_for);
+                $row->nome_cta = removeCaracteresEspeciais($row->nome_cta);
 
-                $this->info('Empresa: ' . $row->nome_for . ' CNPJ/CPF: ' . $row->cgce_for);
+                $this->info('Empresa: ' . $row->nome_cta);
 
 
-                Fornecedor::updateOrCreate(
+                PlanoDeConta::updateOrCreate(
                     ['codi_emp' => $row->codi_emp],
                     [
-                        'nome_for' => $row->nome_for,
-                        'cgce_for' => $row->cgce_for,
+                        'codi_cta' => $row->codi_cta,
+                        'class_cta' => $row->class_cta,
+                        'nome_cta' => $row->nome_cta,
                     ]
                 );
             }

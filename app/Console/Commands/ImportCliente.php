@@ -3,13 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Cliente;
-use PDO;
-use Exception;
-use PDOException;
 use App\Models\Empresa;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Config;
 
 
 class ImportCliente extends Command
