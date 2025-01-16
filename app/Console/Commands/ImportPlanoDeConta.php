@@ -55,6 +55,7 @@ class ImportPlanoDeConta extends Command
                         'codi_cta' => $row->codi_cta,
                         'clas_cta' => $row->clas_cta,
                         'nome_cta' => $row->nome_cta,
+                        'tipo_cta' => $row->tipo_cta,
                     ]
                 );
             }

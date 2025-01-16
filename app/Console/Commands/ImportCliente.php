@@ -36,6 +36,7 @@ class ImportCliente extends Command
             $rows = DB::connection('odbc')
                 ->table($tableName)
                 ->where('codi_emp', $empresa->codi_emp)
+                ->orderBy('codi_cli', 'desc')
                 ->get();
 
 

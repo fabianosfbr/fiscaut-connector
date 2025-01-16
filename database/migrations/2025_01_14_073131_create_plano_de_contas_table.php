@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('codi_cta');
             $table->string('clas_cta');
             $table->string('nome_cta');
+            $table->string('tipo_cta',2)->nullable();
             $table->timestamps();
         });
     }

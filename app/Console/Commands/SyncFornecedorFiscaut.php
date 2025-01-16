@@ -4,17 +4,18 @@ namespace App\Console\Commands;
 
 use App\Models\Cliente;
 use App\Models\Empresa;
+use App\Models\Fornecedor;
 use Illuminate\Console\Command;
 use App\Services\FiscautService;
 
-class SyncClienteFiscaut extends Command
+class SyncFornecedorFiscaut extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:sync-cliente-fiscaut';
+    protected $signature = 'app:sync-fornecedor-fiscaut';
 
     /**
      * The console command description.
@@ -34,21 +35,21 @@ class SyncClienteFiscaut extends Command
 
         foreach ($empresas as $empresa) {
 
-            $this->info('Sincronizando clientes da empresa: ' . $empresa->nome_emp);
+            $this->info('Sincronizando fornecedores da empresa: ' . $empresa->nome_emp);
 
-            Cliente::where('codi_emp', $empresa->codi_emp)
+            Fornecedor::where('codi_emp', $empresa->codi_emp)
                 ->chunk(500, function ($clientes) use ($service, $empresa) {
                     foreach ($clientes as $cliente) {
 
                         $params = [
                             'cnpj_empresa' => $empresa->cgce_emp,
-                            'nome_cliente' => $cliente->nome_cli,
-                            'cnpj_cliente' => $cliente->cgce_cli,
-                            'conta_contabil_cliente' => $cliente->codi_cta,
+                            'nome_fornecedor' => $cliente->nome_for,
+                            'cnpj_fornecedor' => $cliente->cgce_for,
+                            'conta_contabil_fornecedor' => $cliente->codi_cta,
                         ];
 
 
-                        $response = $service->cliente()->create($params);
+                        $response = $service->fornecedor()->create($params);
 
                         dump($params);
 

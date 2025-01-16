@@ -2,19 +2,19 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Cliente;
+use App\Models\PlanoDeConta;
 use App\Models\Empresa;
 use Illuminate\Console\Command;
 use App\Services\FiscautService;
 
-class SyncClienteFiscaut extends Command
+class SyncPlanoDeContaFiscaut extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:sync-cliente-fiscaut';
+    protected $signature = 'app:sync-plano-de-conta-fiscaut';
 
     /**
      * The console command description.
@@ -36,15 +36,16 @@ class SyncClienteFiscaut extends Command
 
             $this->info('Sincronizando clientes da empresa: ' . $empresa->nome_emp);
 
-            Cliente::where('codi_emp', $empresa->codi_emp)
-                ->chunk(500, function ($clientes) use ($service, $empresa) {
-                    foreach ($clientes as $cliente) {
+            PlanoDeConta::where('codi_emp', $empresa->codi_emp)
+                ->chunk(500, function ($planos) use ($service, $empresa) {
+                    foreach ($planos as $plano) {
 
                         $params = [
                             'cnpj_empresa' => $empresa->cgce_emp,
-                            'nome_cliente' => $cliente->nome_cli,
-                            'cnpj_cliente' => $cliente->cgce_cli,
-                            'conta_contabil_cliente' => $cliente->codi_cta,
+                            'codigo' => $plano->codi_cta,
+                            'classificacao' => $plano->clas_cta,
+                            'nome' => $plano->nome_cta,
+                            'tipo' => $plano->tipo_cta,
                         ];
 
 
