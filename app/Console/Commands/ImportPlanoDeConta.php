@@ -47,7 +47,10 @@ class ImportPlanoDeConta extends Command
 
 
                 PlanoDeConta::updateOrCreate(
-                    ['codi_emp' => $row->codi_emp],
+                    [
+                        'codi_emp' => $row->codi_emp,
+                        'clas_cta' => $row->clas_cta,
+                    ],
                     [
                         'codi_cta' => $row->codi_cta,
                         'clas_cta' => $row->clas_cta,
