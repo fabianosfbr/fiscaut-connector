@@ -5,60 +5,67 @@ namespace App\Console\Commands;
 use App\Models\Cliente;
 use App\Models\Empresa;
 use Illuminate\Console\Command;
-use App\Services\FiscautService;
+use Illuminate\Support\Facades\DB;
 
-class SyncClienteFiscaut extends Command
+
+class ImportCliente extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:sync-cliente-fiscaut';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
+    protected $signature = 'import:cliente';
+    protected $description = 'Import clientes from Dominio ODBC to Fiscaut Connector';
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $service = app(FiscautService::class);
 
-        $empresas = Empresa::where('sync', true)->get();
+        $tableName = 'bethadba.efclientes';
+
+        $empresas = Empresa::where('sync', true)
+            ->where('cliente', true)
+            ->get();
+
 
         foreach ($empresas as $empresa) {
 
-            $this->info('Sincronizando clientes da empresa: ' . $empresa->nome_emp);
-
-            dd(Cliente::where('codi_emp', $empresa->codi_emp)->count());
-
-            Cliente::where('codi_emp', $empresa->codi_emp)
-                ->with('plano_de_conta')
-                ->chunk(500, function ($clientes) use ($service, $empresa) {
-                    foreach ($clientes as $cliente) {
-
-                        dd($cliente->count());
-
-                        $this->info('---- Cliente: ' . $cliente->nome_cli);
-
-                        $plano = $cliente->plano_de_conta()->first();
-
-                        $response = $service->cliente()->create([
-                            'cnpj_empresa' => $empresa->cgce_emp,
-                            'nome_cliente' => $cliente->nome_cli,
-                            'cnpj_cliente' => $cliente->cgce_cli,
-                            'conta_contabil_cliente' => $plano->codi_cta,
-                        ]);
+            $rows = DB::connection('odbc')
+                ->table($tableName)
+                ->where('codi_emp', $empresa->codi_emp)
+                ->get();
 
 
-                    }
-                });
+            foreach ($rows as $key => $row) {
+
+                $row->nome_cli = removeCaracteresEspeciais($row->nome_cli);
+
+                $plan = DB::connection('odbc')
+                ->table('bethadba.ctcontas')
+                ->first();
+
+                dd($plan);
+
+                $this->info('Cliente: ' . $row->nome_cli . ' CNPJ/CPF: ' . $row->cgce_cli);
+
+
+                Cliente::updateOrCreate(
+                    [
+                        'codi_emp' => $row->codi_emp,
+                        'codi_cli' => $row->codi_cli,
+                    ],
+                    [
+                        'codi_emp' => $row->codi_emp,
+                        'codi_cli' => $row->codi_cli,
+                        'nome_cli' => $row->nome_cli,
+                        'cgce_cli' => $row->cgce_cli,
+                    ]
+                );
+            }
         }
+
+
     }
 }

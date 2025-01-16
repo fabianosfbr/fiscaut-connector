@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('codi_cli');
             $table->string('nome_cli');
             $table->string('cgce_cli')->nullable();
+            $table->integer('codi_cta')->nullable();
             $table->timestamps();
         });
     }

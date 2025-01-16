@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 
 use App\Models\Empresa;
 use App\Models\Fornecedor;
+use App\Models\PlanoDeConta;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -41,9 +42,13 @@ class ImportFornecedor extends Command
 
             foreach ($rows as $key => $row) {
 
+                $plan = PlanoDeConta::where('codi_emp', $row->codi_emp)
+                    ->where('nome_cta', $row->nome_for)
+                    ->first();
+
                 $row->nome_for = removeCaracteresEspeciais($row->nome_for);
 
-                $this->info('Empresa: ' . $row->nome_for . ' CNPJ/CPF: ' . $row->cgce_for);
+                $this->info('Fornecedor: ' . $row->nome_for . ' CNPJ/CPF: ' . $row->cgce_for);
 
 
                 Fornecedor::updateOrCreate(
@@ -56,6 +61,7 @@ class ImportFornecedor extends Command
                         'codi_for' => $row->codi_for,
                         'nome_for' => $row->nome_for,
                         'cgce_for' => $row->cgce_for,
+                        'codi_cta' => $plan?->codi_cta,
                     ]
                 );
             }

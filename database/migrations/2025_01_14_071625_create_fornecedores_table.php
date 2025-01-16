@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('codi_for');
             $table->string('nome_for');
             $table->string('cgce_for')->nullable();
+            $table->integer('codi_cta')->nullable();
             $table->timestamps();
         });
     }
