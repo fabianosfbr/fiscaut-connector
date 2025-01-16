@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('plano_de_contas', function (Blueprint $table) {
             $table->id();
             $table->integer('codi_emp')->index;
-            $table->integer('codi_cta');
-            $table->integer('clas_cta');
+            $table->string('codi_cta');
+            $table->string('clas_cta');
             $table->string('nome_cta');
             $table->timestamps();
         });
