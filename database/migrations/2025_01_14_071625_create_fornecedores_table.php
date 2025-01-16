@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('fornecedores', function (Blueprint $table) {
             $table->id();
             $table->integer('codi_emp')->index;
+            $table->integer('codi_for');
             $table->string('nome_for');
             $table->string('cgce_for')->nullable();
             $table->timestamps();

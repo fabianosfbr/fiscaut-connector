@@ -40,6 +40,7 @@ class ImportEmpresa extends Command
              Empresa::updateOrCreate(
                 ['codi_emp' => $row->codi_emp],
                 [
+                    'codi_emp' => $row->codi_emp,
                     'razao_emp' => $row->razao_emp,
                     'cgce_emp' => $row->cgce_emp,
                     'iest_emp' => $row->iest_emp,

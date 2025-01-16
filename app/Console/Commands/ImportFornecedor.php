@@ -47,9 +47,13 @@ class ImportFornecedor extends Command
 
 
                 Fornecedor::updateOrCreate(
-                    ['codi_emp' => $row->codi_emp],
                     [
                         'codi_emp' => $row->codi_emp,
+                        'codi_for' => $row->codi_for,
+                    ],
+                    [
+                        'codi_emp' => $row->codi_emp,
+                        'codi_for' => $row->codi_for,
                         'nome_for' => $row->nome_for,
                         'cgce_for' => $row->cgce_for,
                     ]

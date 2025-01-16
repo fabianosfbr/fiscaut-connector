@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->integer('codi_emp')->index;
+            $table->integer('codi_cli');
             $table->string('nome_cli');
             $table->string('cgce_cli')->nullable();
             $table->timestamps();

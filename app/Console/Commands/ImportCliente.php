@@ -46,9 +46,13 @@ class ImportCliente extends Command
 
 
                 Cliente::updateOrCreate(
-                    ['codi_emp' => $row->codi_emp],
                     [
                         'codi_emp' => $row->codi_emp,
+                        'codi_cli' => $row->codi_cli,
+                    ],
+                    [
+                        'codi_emp' => $row->codi_emp,
+                        'codi_cli' => $row->codi_cli,
                         'nome_cli' => $row->nome_cli,
                         'cgce_cli' => $row->cgce_cli,
                     ]
