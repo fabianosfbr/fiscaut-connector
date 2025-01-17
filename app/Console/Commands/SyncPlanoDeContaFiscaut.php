@@ -37,6 +37,7 @@ class SyncPlanoDeContaFiscaut extends Command
             $this->info('Sincronizando plano de contas da empresa: ' . $empresa->nome_emp);
 
             PlanoDeConta::where('codi_emp', $empresa->codi_emp)
+                ->where('fiscaut_sync', false)
                 ->chunk(500, function ($planos) use ($service, $empresa) {
                     foreach ($planos as $plano) {
 
@@ -50,6 +51,13 @@ class SyncPlanoDeContaFiscaut extends Command
 
 
                         $response = $service->plano_de_conta()->create($params);
+
+                        if(isset($response['status']) && $response['status'] == true){
+
+                            $plano->fiscaut_sync = true;
+                            $plano->saveQuietly();
+
+                        }
 
                         dump($params);
 

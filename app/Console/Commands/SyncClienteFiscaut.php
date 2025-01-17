@@ -37,6 +37,7 @@ class SyncClienteFiscaut extends Command
             $this->info('Sincronizando clientes da empresa: ' . $empresa->nome_emp);
 
             Cliente::where('codi_emp', $empresa->codi_emp)
+                ->where('fiscaut_sync', false)
                 ->chunk(500, function ($clientes) use ($service, $empresa) {
                     foreach ($clientes as $cliente) {
 
@@ -50,10 +51,14 @@ class SyncClienteFiscaut extends Command
 
                         $response = $service->cliente()->create($params);
 
-                        dd($response);
+                        if(isset($response['status']) && $response['status'] == true){
+
+                            $cliente->fiscaut_sync = true;
+                            $cliente->saveQuietly();
+
+                        }
 
                         dump($params);
-
                     }
                 });
         }

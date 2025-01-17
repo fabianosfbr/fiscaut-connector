@@ -38,18 +38,26 @@ class SyncFornecedorFiscaut extends Command
             $this->info('Sincronizando fornecedores da empresa: ' . $empresa->nome_emp);
 
             Fornecedor::where('codi_emp', $empresa->codi_emp)
-                ->chunk(500, function ($clientes) use ($service, $empresa) {
-                    foreach ($clientes as $cliente) {
+                ->where('fiscaut_sync', false)
+                ->chunk(500, function ($fornecedores) use ($service, $empresa) {
+                    foreach ($fornecedores as $fornecedor) {
 
                         $params = [
                             'cnpj_empresa' => $empresa->cgce_emp,
-                            'nome_fornecedor' => $cliente->nome_for,
-                            'cnpj_fornecedor' => $cliente->cgce_for,
-                            'conta_contabil_fornecedor' => $cliente->codi_cta,
+                            'nome_fornecedor' => $fornecedor->nome_for,
+                            'cnpj_fornecedor' => $fornecedor->cgce_for,
+                            'conta_contabil_fornecedor' => $fornecedor->codi_cta,
                         ];
 
 
                         $response = $service->fornecedor()->create($params);
+
+                        if(isset($response['status']) && $response['status'] == true){
+
+                            $fornecedor->fiscaut_sync = true;
+                            $fornecedor->saveQuietly();
+
+                        }
 
                         dump($params);
 
