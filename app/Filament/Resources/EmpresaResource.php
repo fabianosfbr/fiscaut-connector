@@ -8,12 +8,19 @@ use App\Models\Empresa;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use App\Livewire\TableEditCliente;
+use App\Livewire\TableEditEmpresa;
+use Filament\Forms\Components\Tabs;
+use App\Livewire\TableEditFornecedor;
+use App\Livewire\TableEditPlanoDeConta;
+use Filament\Forms\Components\Livewire;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EmpresaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmpresaResource\RelationManagers;
+
 
 class EmpresaResource extends Resource
 {
@@ -42,13 +49,38 @@ class EmpresaResource extends Resource
 
                 Forms\Components\Section::make('Serviços Sincronizados')
                     ->schema([
-                        Forms\Components\Checkbox::make('cliente')
-                            ->label('Clientes'),
-                        Forms\Components\Checkbox::make(name: 'fornecedor')
-                            ->label('Fornecedores'),
-                        Forms\Components\Checkbox::make('plano_de_conta')
-                            ->label('Plano de Contas'),
+
+
+
+                        Tabs::make('Tabs')
+                            ->tabs([
+                                Tabs\Tab::make('Plano de conta')
+                                    ->schema([
+                                        Livewire::make(TableEditPlanoDeConta::class)
+                                    ]),
+                                Tabs\Tab::make('Fornecedor')
+                                    ->schema([
+                                        Livewire::make(TableEditFornecedor::class)
+                                    ]),
+                                Tabs\Tab::make('Cliente')
+                                    ->schema([
+                                        Livewire::make(TableEditCliente::class)
+                                    ]),
+                            ]),
+
+
                     ])
+
+
+                // Forms\Components\Section::make('Serviços Sincronizados')
+                //     ->schema([
+                //         Forms\Components\Checkbox::make('cliente')
+                //             ->label('Clientes'),
+                //         Forms\Components\Checkbox::make(name: 'fornecedor')
+                //             ->label('Fornecedores'),
+                //         Forms\Components\Checkbox::make('plano_de_conta')
+                //             ->label('Plano de Contas'),
+                //     ])
 
             ]);
     }
