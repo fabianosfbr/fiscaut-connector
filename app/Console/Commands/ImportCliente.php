@@ -42,11 +42,6 @@ class ImportCliente extends Command
 
             foreach ($rows as $key => $row) {
 
-
-                $plan = PlanoDeConta::where('codi_emp', $row->codi_emp)
-                    ->where('nome_cta', $row->nome_cli)
-                    ->first();
-
                 $row->nome_cli = removeCaracteresEspeciais($row->nome_cli);
 
                 $this->info('Cliente: ' . $row->nome_cli . ' CNPJ/CPF: ' . $row->cgce_cli);
@@ -62,7 +57,7 @@ class ImportCliente extends Command
                         'codi_cli' => $row->codi_cli,
                         'nome_cli' => $row->nome_cli,
                         'cgce_cli' => $row->cgce_cli,
-                        'codi_cta' => $plan?->codi_cta,
+                        'codi_cta' => $row->codi_cta,
                     ]
                 );
             }
