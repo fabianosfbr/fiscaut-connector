@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nome_cli');
             $table->string('cgce_cli')->nullable();
             $table->string('codi_cta')->nullable();
+            $table->boolean('fiscaut_sync')->default(false);
             $table->timestamps();
         });
     }

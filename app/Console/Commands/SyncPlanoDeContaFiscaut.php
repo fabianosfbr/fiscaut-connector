@@ -34,7 +34,7 @@ class SyncPlanoDeContaFiscaut extends Command
 
         foreach ($empresas as $empresa) {
 
-            $this->info('Sincronizando clientes da empresa: ' . $empresa->nome_emp);
+            $this->info('Sincronizando plano de contas da empresa: ' . $empresa->nome_emp);
 
             PlanoDeConta::where('codi_emp', $empresa->codi_emp)
                 ->chunk(500, function ($planos) use ($service, $empresa) {
@@ -49,7 +49,7 @@ class SyncPlanoDeContaFiscaut extends Command
                         ];
 
 
-                        $response = $service->cliente()->create($params);
+                        $response = $service->plano_de_conta()->create($params);
 
                         dump($params);
 

@@ -50,6 +50,8 @@ class SyncClienteFiscaut extends Command
 
                         $response = $service->cliente()->create($params);
 
+                        dd($response);
+
                         dump($params);
 
                     }
