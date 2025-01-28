@@ -1,29 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Fiscaut;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-
 
 trait FiscautConfig
 {
     public function __construct(
         protected ?PendingRequest $http = null,
     ) {
-
-        $token = config("fiscaut.token");
-        $url = config("fiscaut.url");
+        $token = config('fiscaut.token');
+        $url = config('fiscaut.url');
 
         $this->http = Http::withToken($token)
             ->withHeader('Accept', 'application/json')
             ->baseUrl($url);
     }
 
-
     public function get(string $url)
     {
-
         try {
             return $this->http
                 ->get($url)
@@ -34,7 +32,7 @@ trait FiscautConfig
         }
     }
 
-    public function post(string $url, array $params = null)
+    public function post(string $url, ?array $params = null)
     {
         try {
             return $this->http

@@ -1,29 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Services\Fiscaut\Cliente;
 use App\Services\Fiscaut\Fornecedor;
 use App\Services\Fiscaut\PlanoDeConta;
 
-
 class FiscautService
 {
-
-
-    function cliente(): Cliente
+    public function cliente(): Cliente
     {
         return new Cliente();
     }
 
-    function fornecedor(): Fornecedor
+    public function fornecedor(): Fornecedor
     {
         return new Fornecedor();
     }
 
-    function plano_de_conta(): PlanoDeConta
+    public function plano_de_conta(): PlanoDeConta
     {
         return new PlanoDeConta();
     }
-
 }

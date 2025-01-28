@@ -1,27 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\TabelaResource\Pages;
 use App\Models\Tabela;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
+use Filament\Forms;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\TabelaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\TabelaResource\RelationManagers;
+use Filament\Tables\Table;
 
 class TabelaResource extends Resource
 {
     protected static ?string $model = Tabela::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bars-4';
-
 
     protected static ?int $navigationSort = 1;
 
@@ -42,11 +40,8 @@ class TabelaResource extends Resource
                         Forms\Components\TextInput::make('table_description')
                             ->label(label: 'Descrição da tabela'),
 
-
-
                         Forms\Components\Toggle::make('sync')
-                            ->label('Habilitar sincronização com Fiscaut')
-
+                            ->label('Habilitar sincronização com Fiscaut'),
 
                     ]),
             ]);
@@ -69,7 +64,7 @@ class TabelaResource extends Resource
                     ->label('Nº de registros'),
                 IconColumn::make('sync')
                     ->label('Sincroniza com Fiscaut')
-                    ->boolean()
+                    ->boolean(),
             ])
             ->filters([
                 //

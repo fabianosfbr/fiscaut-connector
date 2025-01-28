@@ -1,7 +1,10 @@
 <?php
 
-if (!function_exists("removeCaracteresEspeciais")) {
-    function removeCaracteresEspeciais(string $frase): string {
+declare(strict_types=1);
+
+if (! function_exists('removeCaracteresEspeciais')) {
+    function removeCaracteresEspeciais(string $frase): string
+    {
         // Garante que a string esteja codificada em UTF-8
         $frase = mb_convert_encoding($frase, 'UTF-8', 'UTF-8');
 

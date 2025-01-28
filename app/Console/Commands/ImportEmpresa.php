@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+declare(strict_types=1);
 
+namespace App\Console\Commands;
 
 use App\Models\Empresa;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-
-
 
 class ImportEmpresa extends Command
 {
@@ -17,27 +16,26 @@ class ImportEmpresa extends Command
      * @var string
      */
     protected $signature = 'import:empresa';
+
     protected $description = 'Import empresas from Dominio ODBC to Fiscaut Connector';
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-
         $tableName = 'bethadba.geempre';
 
         $rows = DB::connection('odbc')
-        ->table($tableName)
-        ->get();
+            ->table($tableName)
+            ->get();
 
         foreach ($rows as $key => $row) {
-
             $row->razao_emp = removeCaracteresEspeciais($row->razao_emp);
 
-            $this->info('Empresa: ' . $row->razao_emp . ' Código: ' . $row->codi_emp);
+            $this->info('Empresa: '.$row->razao_emp.' Código: '.$row->codi_emp);
 
-
-             Empresa::updateOrCreate(
+            Empresa::updateOrCreate(
                 ['codi_emp' => $row->codi_emp],
                 [
                     'codi_emp' => $row->codi_emp,
@@ -49,9 +47,5 @@ class ImportEmpresa extends Command
                 ]
             );
         }
-
-
     }
-
-
 }

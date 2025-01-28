@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\Cliente;
 use App\Models\Empresa;
-use Illuminate\Console\Command;
 use App\Services\FiscautService;
+use Illuminate\Console\Command;
 
 class SyncClienteFiscaut extends Command
 {
@@ -33,14 +35,12 @@ class SyncClienteFiscaut extends Command
         $empresas = Empresa::where('sync', true)->get();
 
         foreach ($empresas as $empresa) {
-
-            $this->info('Sincronizando clientes da empresa: ' . $empresa->nome_emp);
+            $this->info('Sincronizando clientes da empresa: '.$empresa->nome_emp);
 
             Cliente::where('codi_emp', $empresa->codi_emp)
                 ->where('fiscaut_sync', false)
                 ->chunk(500, function ($clientes) use ($service, $empresa) {
                     foreach ($clientes as $cliente) {
-
                         $params = [
                             'cnpj_empresa' => $empresa->cgce_emp,
                             'nome_cliente' => $cliente->nome_cli,
@@ -48,14 +48,11 @@ class SyncClienteFiscaut extends Command
                             'conta_contabil_cliente' => $cliente->codi_cta,
                         ];
 
-
                         $response = $service->cliente()->create($params);
 
-                        if(isset($response['status']) && $response['status'] == true){
-
+                        if (isset($response['status']) && $response['status'] == true) {
                             $cliente->fiscaut_sync = true;
                             $cliente->saveQuietly();
-
                         }
 
                         dump($params);

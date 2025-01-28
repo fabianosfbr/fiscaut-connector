@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class() extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->string('codi_cta');
             $table->string('clas_cta');
             $table->string('nome_cta');
-            $table->string('tipo_cta',2)->nullable();
+            $table->string('tipo_cta', 2)->nullable();
             $table->boolean('fiscaut_sync')->default(false);
             $table->timestamps();
         });

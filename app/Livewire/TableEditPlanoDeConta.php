@@ -1,33 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
-use Livewire\Component;
-use Filament\Tables\Table;
 use App\Models\PlanoDeConta;
-use Illuminate\Contracts\View\View;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Session;
+use Livewire\Component;
 
 class TableEditPlanoDeConta extends Component implements HasForms, HasTable
 {
-    use InteractsWithTable;
     use InteractsWithForms;
+    use InteractsWithTable;
+
+    public $codi_emp;
+
+    public function mount()
+    {
+        $this->codi_emp = Session::get('codi_emp');
+        // Session::remove('codi_emp');
+    }
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(PlanoDeConta::query())
-            ->defaultSort('codi_cta', 'asc')
-            ->recordClasses(function (Model $record) {
-                if ($record->tipo_cta == 'A') {
-                    return 'bg-gray-100 dark:bg-gray-800';
-                }
-            })
+            ->query(PlanoDeConta::query()->where('codi_emp', $this->codi_emp)->orderBy('codi_cta', 'asc'))
             ->columns([
                 TextColumn::make('codi_cta')
                     ->label('Codigo')
@@ -40,12 +45,16 @@ class TableEditPlanoDeConta extends Component implements HasForms, HasTable
                     ->label('Classificação')
                     ->alignEnd()
                     ->searchable(),
-                    TextColumn::make('tipo_cta')
+                TextColumn::make('tipo_cta')
                     ->label('Tipo')
                     ->badge(),
+                IconColumn::make('fiscaut_sync')
+                    ->label('Fiscaut')
+                    ->boolean(),
             ])
             ->filters([
-                // ...
+                TernaryFilter::make('fiscaut_sync')
+                    ->label('Fiscaut Sync'),
             ])
             ->actions([
                 // ...
@@ -54,7 +63,6 @@ class TableEditPlanoDeConta extends Component implements HasForms, HasTable
                 // ...
             ]);
     }
-
 
     public function render()
     {

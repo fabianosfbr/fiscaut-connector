@@ -1,33 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Empresa;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
+use App\Filament\Resources\EmpresaResource\Pages;
 use App\Livewire\TableEditCliente;
-use App\Livewire\TableEditEmpresa;
-use Filament\Forms\Components\Tabs;
 use App\Livewire\TableEditFornecedor;
 use App\Livewire\TableEditPlanoDeConta;
+use App\Models\Empresa;
+use Filament\Forms;
 use Filament\Forms\Components\Livewire;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\EmpresaResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\EmpresaResource\RelationManagers;
-
+use Filament\Tables\Table;
 
 class EmpresaResource extends Resource
 {
     protected static ?string $model = Empresa::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-
 
     protected static ?int $navigationSort = 1;
 
@@ -37,40 +33,42 @@ class EmpresaResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
+
+                        Forms\Components\TextInput::make(name: 'codi_emp')
+                            ->label('Codigo do Domínio')
+                            ->disabled(),
+
                         Forms\Components\TextInput::make('razao_emp')
                             ->label('Razão Social')
                             ->disabled(),
+
                         Forms\Components\TextInput::make('cgce_emp')
                             ->label('CNPJ/CPF')
                             ->disabled(),
                         Forms\Components\Toggle::make('sync')
-                            ->label('Habilitar sincronização com Fiscaut')
+                            ->label('Habilitar sincronização com Fiscaut'),
                     ]),
 
                 Forms\Components\Section::make('Serviços Sincronizados')
                     ->schema([
 
-
-
                         Tabs::make('Tabs')
                             ->tabs([
                                 Tabs\Tab::make('Plano de conta')
                                     ->schema([
-                                        Livewire::make(TableEditPlanoDeConta::class)
+                                        Livewire::make(TableEditPlanoDeConta::class),
                                     ]),
                                 Tabs\Tab::make('Fornecedor')
                                     ->schema([
-                                        Livewire::make(TableEditFornecedor::class)
+                                        Livewire::make(TableEditFornecedor::class),
                                     ]),
                                 Tabs\Tab::make('Cliente')
                                     ->schema([
-                                        Livewire::make(TableEditCliente::class)
+                                        Livewire::make(TableEditCliente::class),
                                     ]),
                             ]),
 
-
-                    ])
-
+                    ]),
 
                 // Forms\Components\Section::make('Serviços Sincronizados')
                 //     ->schema([
@@ -118,8 +116,7 @@ class EmpresaResource extends Resource
                     ->label('IM'),
                 IconColumn::make('sync')
                     ->label('Sincroniza com Fiscaut')
-                    ->boolean()
-
+                    ->boolean(),
 
             ])
             ->filters([
