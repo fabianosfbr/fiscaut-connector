@@ -36,6 +36,8 @@ class Settings extends Page implements HasForms
 
     public ?string $fiscaut_url = null;
 
+    public ?string $external_url = null;
+
     public function mount(): void
     {
         $config = Configuracao::first();
