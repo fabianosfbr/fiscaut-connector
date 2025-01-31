@@ -25,7 +25,10 @@ class InternalApiAuth
                 'success' => false,
             ];
 
-            return response()->json($response, 401);
+            return response()->json([
+                'status' => false,
+                'message' => "Acesso não autorizado",
+            ], 401);
         }
 
         return $next($request);

@@ -13,6 +13,7 @@ class EmpresaController extends Controller
     {
         $validated = $request->validate([
             'cgce_emp' => 'required',
+            'sync' => 'required|boolean',
         ], [
             'cgce_emp.required' => 'O campo cgce_emp é obrigatório.',
         ]);
@@ -23,6 +24,10 @@ class EmpresaController extends Controller
         if ($empresa) {
 
             SyncClienteFiscautJob::dispatch($empresa);
+
+            $empresa->updated_at = now();
+            $empresa->sync = $validated['sync'];
+            $empresa->save();
 
             return response()->json([
                 'status' => true,
