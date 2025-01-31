@@ -112,8 +112,9 @@ class EmpresaResource extends Resource
                     ->label('CNPJ'),
                 TextColumn::make('iest_emp')
                     ->label('IE'),
-                TextColumn::make('imun_emp')
-                    ->label('IM'),
+                TextColumn::make('update_at')
+                    ->label('Ultima Atualização')
+                    ->dateTime('d/m/Y H:i:s'),
                 IconColumn::make('sync')
                     ->label('Sincroniza com Fiscaut')
                     ->boolean(),
