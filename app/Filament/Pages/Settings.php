@@ -51,6 +51,8 @@ class Settings extends Page implements HasForms
                         TextInput::make('api_key')
                             ->label('Chave de integração')
                             ->required(),
+                        TextInput::make('external_url')
+                            ->label('URL de acesso externo'),
                         Hidden::make('id'),
                     ]),
 
