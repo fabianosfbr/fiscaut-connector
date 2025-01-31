@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Models\Configuracao;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+Artisan::command('play', function () {
+    $api_key = Configuracao::first()?->api_key;
+
+    dd($api_key);
+});

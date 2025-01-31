@@ -14,4 +14,10 @@ class Cliente extends Model
     {
         return $this->belongsTo(PlanoDeConta::class, 'codi_emp', 'codi_emp');
     }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'codi_emp', 'codi_emp');
+    }
+
 }

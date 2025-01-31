@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Configuracao;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,9 @@ class InternalApiAuth
     {
         $token = $request->bearerToken();
 
-        if (! $token || $token !== config('services.internal_api_key')) {
+        $api_key = Configuracao::first()?->api_key;
+
+        if (! $token || $token !== $api_key) {
             $response = [
                 'success' => false,
             ];
