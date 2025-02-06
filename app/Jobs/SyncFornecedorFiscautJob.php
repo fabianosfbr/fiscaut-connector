@@ -13,6 +13,10 @@ class SyncFornecedorFiscautJob implements ShouldQueue
 {
     use Queueable;
 
+    public $failOnTimeout = false;
+
+    public $timeout = 120000;
+
     /**
      * Create a new job instance.
      */
