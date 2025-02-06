@@ -21,4 +21,8 @@ Route::group(['middleware' => ['internal.api.auth']], function () {
     Route::prefix('/empresas')->group(function () {
         Route::post('/', [App\Http\Controllers\EmpresaController::class, 'getEmpresa'])->name('getEmpresa');
     });
+
+    Route::prefix('/planos')->group(function () {
+        Route::post('/', [App\Http\Controllers\PlanoDeContaController::class, 'getEmpresa'])->name('getPlanoDeContas');
+    });
 });
