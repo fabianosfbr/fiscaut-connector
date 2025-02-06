@@ -20,6 +20,7 @@ Route::group(['middleware' => ['internal.api.auth']], function () {
     });
 
     Route::prefix('/planos')->group(function () {
-        Route::post('/', [App\Http\Controllers\PlanoDeContaController::class, 'getEmpresa'])->name('getPlanoDeContas');
+        Route::post('/', [App\Http\Controllers\PlanoDeContaController::class, 'getPlanoDeContas'])
+        ->name('getPlanoDeContas');
     });
 });
