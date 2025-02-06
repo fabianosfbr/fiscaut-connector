@@ -4,11 +4,13 @@ namespace App\Jobs;
 
 use App\Models\Cliente;
 use App\Models\Empresa;
+use App\Models\Fornecedor;
+use App\Models\PlanoDeConta;
 use App\Services\FiscautService;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SyncClienteFiscautJob implements ShouldQueue
+class SyncPlanoDeContaFiscautJob implements ShouldQueue
 {
     use Queueable;
 
@@ -28,25 +30,28 @@ class SyncClienteFiscautJob implements ShouldQueue
     {
         $service = app(FiscautService::class);
 
-        Cliente::where('codi_emp', $this->empresa->codi_emp)
+        PlanoDeConta::where('codi_emp', $this->empresa->codi_emp)
             ->where('fiscaut_sync', false)
-            ->chunk(500, function ($clientes) use ($service) {
-                foreach ($clientes as $cliente) {
+            ->chunk(500, function ($planos) use ($service) {
+                foreach ($planos as $plano) {
                     $params = [
                         'cnpj_empresa' => $this->empresa->cgce_emp,
-                        'nome_cliente' => $cliente->nome_cli,
-                        'cnpj_cliente' => $cliente->cgce_cli,
-                        'conta_contabil_cliente' => $cliente->codi_cta,
+                        'codigo' => $plano->codi_cta,
+                        'classificacao' => $plano->clas_cta,
+                        'nome' => $plano->nome_cta,
+                        'tipo' => $plano->tipo_cta,
+                        'status' =>  true,
                     ];
 
-                    $response = $service->cliente()->create($params);
+                    $response = $service->plano_de_conta()->create($params);
 
                     if (isset($response['status']) && $response['status'] == true) {
-                        $cliente->fiscaut_sync = true;
-                        $cliente->saveQuietly();
+                        $plano->fiscaut_sync = true;
+                        $plano->saveQuietly();
                     }
 
                     $params = ['cnpj_nome' => $this->empresa->razao_emp,];
+
                     dump($params);
                 }
             });

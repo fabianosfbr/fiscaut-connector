@@ -11,7 +11,12 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['internal.api.auth']], function () {
     Route::prefix('/clientes')->group(function () {
-        Route::post('/', [App\Http\Controllers\ClienteController::class, 'getClientes'])->name('clientes');
+        Route::post('/', [App\Http\Controllers\ClienteController::class, 'getClientes'])
+            ->name('clientes');
+    });
+    Route::prefix('/fornecedores')->group(function () {
+        Route::post('/', [App\Http\Controllers\FornecedorController::class, 'getFornecedores'])
+            ->name('clientes');
     });
     Route::prefix('/empresas')->group(function () {
         Route::post('/', [App\Http\Controllers\EmpresaController::class, 'getEmpresa'])->name('getEmpresa');

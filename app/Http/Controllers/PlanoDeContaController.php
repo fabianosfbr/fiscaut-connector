@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
-use App\Jobs\SyncClienteFiscautJob;
+use App\Jobs\SyncPlanoDeContaFiscautJob;
 
-class ClienteController extends Controller
+class PlanoDeContaController extends Controller
 {
-    public function getClientes(Request $request)
+    public function getPlanoDeContas(Request $request)
     {
 
         $validated = $request->validate([
@@ -24,7 +23,7 @@ class ClienteController extends Controller
 
         if ($empresa) {
 
-            SyncClienteFiscautJob::dispatch($empresa);
+            SyncPlanoDeContaFiscautJob::dispatch($empresa);
 
             $empresa->updated_at = now();
             $empresa->sync = $validated['sync'];

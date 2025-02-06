@@ -4,11 +4,12 @@ namespace App\Jobs;
 
 use App\Models\Cliente;
 use App\Models\Empresa;
+use App\Models\Fornecedor;
 use App\Services\FiscautService;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SyncClienteFiscautJob implements ShouldQueue
+class SyncFornecedorFiscautJob implements ShouldQueue
 {
     use Queueable;
 
@@ -28,24 +29,23 @@ class SyncClienteFiscautJob implements ShouldQueue
     {
         $service = app(FiscautService::class);
 
-        Cliente::where('codi_emp', $this->empresa->codi_emp)
+        Fornecedor::where('codi_emp', $this->empresa->codi_emp)
             ->where('fiscaut_sync', false)
-            ->chunk(500, function ($clientes) use ($service) {
-                foreach ($clientes as $cliente) {
+            ->chunk(500, function ($fornecedores) use ($service) {
+                foreach ($fornecedores as $fornecedor) {
                     $params = [
                         'cnpj_empresa' => $this->empresa->cgce_emp,
-                        'nome_cliente' => $cliente->nome_cli,
-                        'cnpj_cliente' => $cliente->cgce_cli,
-                        'conta_contabil_cliente' => $cliente->codi_cta,
+                        'nome_fornecedor' => $fornecedor->nome_for,
+                        'cnpj_fornecedor' => $fornecedor->cgce_for,
+                        'conta_contabil_fornecedor' => $fornecedor->codi_cta,
                     ];
 
-                    $response = $service->cliente()->create($params);
+                    $response = $service->fornecedor()->create($params);
 
                     if (isset($response['status']) && $response['status'] == true) {
-                        $cliente->fiscaut_sync = true;
-                        $cliente->saveQuietly();
+                        $fornecedor->fiscaut_sync = true;
+                        $fornecedor->saveQuietly();
                     }
-
                     $params = ['cnpj_nome' => $this->empresa->razao_emp,];
                     dump($params);
                 }
