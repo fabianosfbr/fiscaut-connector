@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Acumulador extends Model
 {
-    public $tableName = 'acumuladores';
+    public $table = 'acumuladores';
 }
