@@ -8,6 +8,7 @@ use App\Filament\Resources\EmpresaResource\Pages;
 use App\Livewire\TableEditCliente;
 use App\Livewire\TableEditFornecedor;
 use App\Livewire\TableEditPlanoDeConta;
+use App\Livewire\TableEditAcumulador;
 use App\Models\Empresa;
 use Filament\Forms;
 use Filament\Forms\Components\Livewire;
@@ -66,19 +67,14 @@ class EmpresaResource extends Resource
                                     ->schema([
                                         Livewire::make(TableEditCliente::class),
                                     ]),
+                                Tabs\Tab::make('Acumulador')
+                                    ->schema([
+                                        Livewire::make(TableEditAcumulador::class),
+                                    ]),
                             ]),
 
                     ]),
 
-                // Forms\Components\Section::make('Serviços Sincronizados')
-                //     ->schema([
-                //         Forms\Components\Checkbox::make('cliente')
-                //             ->label('Clientes'),
-                //         Forms\Components\Checkbox::make(name: 'fornecedor')
-                //             ->label('Fornecedores'),
-                //         Forms\Components\Checkbox::make('plano_de_conta')
-                //             ->label('Plano de Contas'),
-                //     ])
 
             ]);
     }
