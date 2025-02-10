@@ -23,4 +23,15 @@ Route::group(['middleware' => ['internal.api.auth']], function () {
         Route::post('/', [App\Http\Controllers\PlanoDeContaController::class, 'getPlanoDeContas'])
         ->name('getPlanoDeContas');
     });
+
+
+    Route::prefix('/acumuladores')->group(function () {
+        Route::post('/', [App\Http\Controllers\AcumuladorController::class, 'getAcumuladores'])
+        ->name('getAcumuladores');
+    });
+
+    Route::prefix('/all-service')->group(function () {
+        Route::post('/', [App\Http\Controllers\AllServiceController::class, 'getAllService'])
+        ->name('getAllService');
+    });
 });

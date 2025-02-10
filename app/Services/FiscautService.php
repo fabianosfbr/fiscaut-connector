@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Services\Fiscaut\Cliente;
 use App\Services\Fiscaut\Fornecedor;
 use App\Services\Fiscaut\PlanoDeConta;
+use App\Services\Fiscaut\Acumulador;
 
 class FiscautService
 {
@@ -23,5 +24,10 @@ class FiscautService
     public function plano_de_conta(): PlanoDeConta
     {
         return new PlanoDeConta();
+    }
+
+    public function acumulador(): Acumulador
+    {
+        return new Acumulador();
     }
 }
