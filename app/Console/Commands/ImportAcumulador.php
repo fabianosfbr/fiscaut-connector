@@ -39,7 +39,7 @@ class ImportAcumulador extends Command
                 ->get();
 
             foreach ($rows as $key => $row) {
-                
+
                 $row->NOME_ACU = removeCaracteresEspeciais($row->NOME_ACU);
 
                 $this->info('Acumulador: '.$row->NOME_ACU);
