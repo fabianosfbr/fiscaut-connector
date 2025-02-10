@@ -39,20 +39,20 @@ class ImportAcumulador extends Command
                 ->get();
 
             foreach ($rows as $key => $row) {
-               
-                $row->nome_acu = removeCaracteresEspeciais($row->nome_acu);
+                
+                $row->NOME_ACU = removeCaracteresEspeciais($row->NOME_ACU);
 
-                $this->info('Cliente: '.$row->nome_acu);
+                $this->info('Acumulador: '.$row->NOME_ACU);
 
                 Acumulador::updateOrCreate(
                     [
-                        'codi_acu' => $row->codi_acu,
+                        'codi_acu' => $row->CODI_ACU,
                         'codi_emp' => $empresa->codi_emp,
                     ],
                     [
-                        'codi_acu' => $row->codi_acu,
-                        'nome_acu' => $row->nome_acu,
-                        'descricao_acu' => $row->descricao_acu,
+                        'codi_acu' => $row->CODI_ACU,
+                        'nome_acu' => $row->NOME_ACU,
+                        'descricao_acu' => $row->DESCRICAO_ACU,
                         'codi_emp' => $empresa->codi_emp,
                     ]
                 );
