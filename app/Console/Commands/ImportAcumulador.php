@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Acumulador;
 use App\Models\Cliente;
 use App\Models\Empresa;
 use Illuminate\Console\Command;
@@ -35,26 +36,24 @@ class ImportAcumulador extends Command
             $rows = DB::connection('odbc')
                 ->table($tableName)
                 ->where('codi_emp', $empresa->codi_emp)
-                ->orderBy('codi_cli', 'desc')
                 ->get();
 
             foreach ($rows as $key => $row) {
-                dd($row);
-                $row->nome_cli = removeCaracteresEspeciais($row->nome_cli);
+               
+                $row->nome_acu = removeCaracteresEspeciais($row->nome_acu);
 
-                $this->info('Cliente: '.$row->nome_cli.' CNPJ/CPF: '.$row->cgce_cli);
+                $this->info('Cliente: '.$row->nome_acu);
 
-                Cliente::updateOrCreate(
+                Acumulador::updateOrCreate(
                     [
-                        'codi_emp' => $row->codi_emp,
-                        'codi_cli' => $row->codi_cli,
+                        'codi_acu' => $row->codi_acu,
+                        'codi_emp' => $empresa->codi_emp,
                     ],
                     [
-                        'codi_emp' => $row->codi_emp,
-                        'codi_cli' => $row->codi_cli,
-                        'nome_cli' => $row->nome_cli,
-                        'cgce_cli' => $row->cgce_cli,
-                        'codi_cta' => $row->codi_cta,
+                        'codi_acu' => $row->codi_acu,
+                        'nome_acu' => $row->nome_acu,
+                        'descricao_acu' => $row->descricao_acu,
+                        'codi_emp' => $empresa->codi_emp,
                     ]
                 );
             }
