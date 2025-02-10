@@ -41,6 +41,7 @@ class ImportAcumulador extends Command
             foreach ($rows as $key => $row) {
 
                 $row->NOME_ACU = removeCaracteresEspeciais($row->NOME_ACU);
+                $row->DESCRICAO_ACU = removeCaracteresEspeciais($row->DESCRICAO_ACU);
 
                 $this->info('Acumulador: '.$row->NOME_ACU);
 
