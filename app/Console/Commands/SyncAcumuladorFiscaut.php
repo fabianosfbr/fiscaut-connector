@@ -37,9 +37,30 @@ class SyncAcumuladorFiscaut extends Command
         $empresas = Empresa::where('sync', true)->get();
 
         foreach ($empresas as $empresa) {
-            $this->info('Sincronizando clientes da empresa: '.$empresa->nome_emp);
+            $this->info('Sincronizando acumuladores da empresa: '.$empresa->nome_emp);
 
-            SyncAcumuladorFiscautJob::dispatch($empresa);
+            Acumulador::where('codi_emp', $empresa->codi_emp)
+            ->where('fiscaut_sync', false)
+            ->chunk(500, function ($acumuladores) use ($service, $empresa) {
+                foreach ($acumuladores as $acumulador) {
+                    $params = [
+                        'cnpj_empresa' => $empresa->cgce_emp,
+                        'codi_acu' => $acumulador->codi_acu,
+                        'nome_acu' => $acumulador->nome_acu,
+                    ];
+
+                    $response = $service->acumulador()->create($params);
+
+                    if (isset($response['status']) && $response['status'] == true) {
+                        $acumulador->fiscaut_sync = true;
+                        $acumulador->saveQuietly();
+                    }
+
+                    $params['cnpj_nome'] = $empresa->razao_emp;
+
+                    dump($params);
+                }
+            });
         }
     }
 }
