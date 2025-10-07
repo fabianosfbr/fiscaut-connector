@@ -39,6 +39,7 @@ class SyncClienteFiscaut extends Command
 
             Cliente::where('codi_emp', $empresa->codi_emp)
                 ->where('fiscaut_sync', false)
+                ->whereNotNull('cgce_cli')
                 ->chunk(500, function ($clientes) use ($service, $empresa) {
                     foreach ($clientes as $cliente) {
                         $params = [

@@ -39,6 +39,7 @@ class SyncFornecedorFiscaut extends Command
 
             Fornecedor::where('codi_emp', $empresa->codi_emp)
                 ->where('fiscaut_sync', false)
+                ->whereNotNull('cgce_for')
                 ->chunk(500, function ($fornecedores) use ($service, $empresa) {
                     foreach ($fornecedores as $fornecedor) {
                         $params = [
@@ -55,7 +56,7 @@ class SyncFornecedorFiscaut extends Command
                             $fornecedor->saveQuietly();
                         }
 
-                        dump($params);
+                        dump($response);
                     }
                 });
         }

@@ -34,7 +34,8 @@ class TableEditFornecedor extends Component implements HasForms, HasTable
             ->query(Fornecedor::query()->where('codi_emp', $this->codi_emp)->orderBy('nome_for', 'asc'))
             ->columns([
                 TextColumn::make('nome_for')
-                    ->label('Nome'),
+                    ->label('Nome')
+                    ->searchable(),
                 TextColumn::make('cgce_for')
                     ->label('CNPJ'),
                 TextColumn::make('codi_cta')

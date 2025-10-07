@@ -30,6 +30,7 @@ class ImportEmpresa extends Command
             ->table($tableName)
             ->get();
 
+     
         foreach ($rows as $key => $row) {
             $row->razao_emp = removeCaracteresEspeciais($row->razao_emp);
 

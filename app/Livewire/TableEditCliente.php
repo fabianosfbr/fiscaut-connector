@@ -36,6 +36,7 @@ class TableEditCliente extends Component implements HasForms, HasTable
                 TextColumn::make('nome_cli')
                     ->label('Nome'),
                 TextColumn::make('cgce_cli')
+                    ->searchable()
                     ->label('CNPJ'),
                 TextColumn::make('codi_cta')
                     ->label('Conta Contábil')
