@@ -42,21 +42,25 @@ class SyncClienteFiscaut extends Command
                 ->whereNotNull('cgce_cli')
                 ->chunk(500, function ($clientes) use ($service, $empresa) {
                     foreach ($clientes as $cliente) {
-                        $params = [
-                            'cnpj_empresa' => $empresa->cgce_emp,
-                            'nome_cliente' => $cliente->nome_cli,
-                            'cnpj_cliente' => $cliente->cgce_cli,
-                            'conta_contabil_cliente' => $cliente->codi_cta,
-                        ];
+                        if(strlen($cliente->cgce_cli) > 1){
+                            $params = [
+                                'cnpj_empresa' => $empresa->cgce_emp,
+                                'nome_cliente' => $cliente->nome_cli,
+                                'cnpj_cliente' => $cliente->cgce_cli,
+                                'conta_contabil_cliente' => $cliente->codi_cta,
+                            ];
 
-                        $response = $service->cliente()->create($params);
+                            $response = $service->cliente()->create($params);
 
-                        if (isset($response['status']) && $response['status'] == true) {
-                            $cliente->fiscaut_sync = true;
-                            $cliente->saveQuietly();
-                        }
+                            if (isset($response['status']) && $response['status'] == true) {
+                                $cliente->fiscaut_sync = true;
+                                $cliente->saveQuietly();
+                            }
 
-                        dump($params);
+                            dump($params);
+
+                            }
+                        
                     }
                 });
         }

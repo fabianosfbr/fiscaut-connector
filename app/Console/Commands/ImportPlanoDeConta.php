@@ -31,30 +31,43 @@ class ImportPlanoDeConta extends Command
             ->where('cliente', true)
             ->get();
 
+        $totalNewPlanosDeConta = 0;
+
         foreach ($empresas as $empresa) {
-            $rows = DB::connection('odbc')
+            // Get all existing plano de contas for this empresa (using clas_cta as the unique identifier)
+            $existingPlanoDeContas = PlanoDeConta::where('codi_emp', $empresa->codi_emp)
+                ->pluck('clas_cta')
+                ->toArray();
+
+            // Fetch only plano de contas that don't exist for this empresa
+            $query = DB::connection('odbc')
                 ->table($tableName)
-                ->where('codi_emp', $empresa->codi_emp)
-                ->get();
+                ->where('codi_emp', $empresa->codi_emp);
+
+            // If there are existing plano de contas for this empresa, exclude them from the query
+            if (!empty($existingPlanoDeContas)) {
+                $query = $query->whereNotIn('clas_cta', $existingPlanoDeContas);
+            }
+
+            $rows = $query->get();
 
             foreach ($rows as $key => $row) {
                 $row->nome_cta = removeCaracteresEspeciais($row->nome_cta);
 
-                $this->info('Empresa: '.$row->nome_cta);
+                $this->info('Plano de Conta: '.$row->nome_cta);
 
-                PlanoDeConta::updateOrCreate(
-                    [
-                        'codi_emp' => $row->codi_emp,
-                        'clas_cta' => $row->clas_cta,
-                    ],
-                    [
-                        'codi_cta' => $row->codi_cta,
-                        'clas_cta' => $row->clas_cta,
-                        'nome_cta' => $row->nome_cta,
-                        'tipo_cta' => $row->tipo_cta,
-                    ]
-                );
+                PlanoDeConta::create([
+                    'codi_cta' => $row->codi_cta,
+                    'clas_cta' => $row->clas_cta,
+                    'nome_cta' => $row->nome_cta,
+                    'tipo_cta' => $row->tipo_cta,
+                    'codi_emp' => $empresa->codi_emp,
+                ]);
             }
+            
+            $totalNewPlanosDeConta += $rows->count();
         }
+        
+        $this->info('Import completed. '.$totalNewPlanosDeConta.' new plano de contas were added.');
     }
 }

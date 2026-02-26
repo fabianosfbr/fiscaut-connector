@@ -32,32 +32,43 @@ class ImportAcumulador extends Command
             ->where('cliente', true)
             ->get();
 
+        $totalNewAcumuladores = 0;
+
         foreach ($empresas as $empresa) {
-            $rows = DB::connection('odbc')
+            // Get all existing acumulador codes for this empresa
+            $existingAcumuladorCodes = Acumulador::where('codi_emp', $empresa->codi_emp)
+                ->pluck('codi_acu')
+                ->toArray();
+
+            // Fetch only acumuladores that don't exist for this empresa
+            $query = DB::connection('odbc')
                 ->table($tableName)
-                ->where('codi_emp', $empresa->codi_emp)
-                ->get();
+                ->where('codi_emp', $empresa->codi_emp);
+
+            // If there are existing acumuladores for this empresa, exclude them from the query
+            if (!empty($existingAcumuladorCodes)) {
+                $query = $query->whereNotIn('CODI_ACU', $existingAcumuladorCodes);
+            }
+
+            $rows = $query->get();
 
             foreach ($rows as $key => $row) {
-
                 $row->NOME_ACU = removeCaracteresEspeciais($row->NOME_ACU);
                 $row->DESCRICAO_ACU = removeCaracteresEspeciais($row->DESCRICAO_ACU);
 
                 $this->info('Acumulador: '.$row->NOME_ACU);
 
-                Acumulador::updateOrCreate(
-                    [
-                        'codi_acu' => $row->CODI_ACU,
-                        'codi_emp' => $empresa->codi_emp,
-                    ],
-                    [
-                        'codi_acu' => $row->CODI_ACU,
-                        'nome_acu' => $row->NOME_ACU,
-                        'descricao_acu' => $row->DESCRICAO_ACU,
-                        'codi_emp' => $empresa->codi_emp,
-                    ]
-                );
+                Acumulador::create([
+                    'codi_acu' => $row->CODI_ACU,
+                    'nome_acu' => $row->NOME_ACU,
+                    'descricao_acu' => $row->DESCRICAO_ACU,
+                    'codi_emp' => $empresa->codi_emp,
+                ]);
             }
+            
+            $totalNewAcumuladores += $rows->count();
         }
+        
+        $this->info('Import completed. '.$totalNewAcumuladores.' new acumuladores were added.');
     }
 }

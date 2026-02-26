@@ -26,27 +26,35 @@ class ImportEmpresa extends Command
     {
         $tableName = 'bethadba.geempre';
 
-        $rows = DB::connection('odbc')
-            ->table($tableName)
-            ->get();
+        // Get all existing company codes from the local database
+        $existingCompanyCodes = Empresa::pluck('codi_emp')->toArray();
 
+        // Fetch only companies that don't exist in the local database
+        $query = DB::connection('odbc')
+            ->table($tableName);
+
+        // If there are existing companies, exclude them from the query
+        if (!empty($existingCompanyCodes)) {
+            $query = $query->whereNotIn('codi_emp', $existingCompanyCodes);
+        }
+
+        $rows = $query->get();
      
         foreach ($rows as $key => $row) {
             $row->razao_emp = removeCaracteresEspeciais($row->razao_emp);
 
             $this->info('Empresa: '.$row->razao_emp.' Código: '.$row->codi_emp);
 
-            Empresa::updateOrCreate(
-                ['codi_emp' => $row->codi_emp],
-                [
-                    'codi_emp' => $row->codi_emp,
-                    'razao_emp' => $row->razao_emp,
-                    'cgce_emp' => $row->cgce_emp,
-                    'iest_emp' => $row->iest_emp,
-                    'imun_emp' => $row->imun_emp,
-                    'codi_mun' => $row->codi_mun,
-                ]
-            );
+            Empresa::create([
+                'codi_emp' => $row->codi_emp,
+                'razao_emp' => $row->razao_emp,
+                'cgce_emp' => $row->cgce_emp,
+                'iest_emp' => $row->iest_emp,
+                'imun_emp' => $row->imun_emp,
+                'codi_mun' => $row->codi_mun,
+            ]);
         }
+        
+        $this->info('Import completed. '.$rows->count().' new companies were added.');
     }
 }

@@ -42,7 +42,8 @@ class SyncFornecedorFiscaut extends Command
                 ->whereNotNull('cgce_for')
                 ->chunk(500, function ($fornecedores) use ($service, $empresa) {
                     foreach ($fornecedores as $fornecedor) {
-                        $params = [
+                        if(strlen($fornecedor->cgce_for) > 1){
+                            $params = [
                             'cnpj_empresa' => $empresa->cgce_emp,
                             'nome_fornecedor' => $fornecedor->nome_for,
                             'cnpj_fornecedor' => $fornecedor->cgce_for,
@@ -57,6 +58,9 @@ class SyncFornecedorFiscaut extends Command
                         }
 
                         dump($response);
+                           
+                        }
+                        
                     }
                 });
         }
