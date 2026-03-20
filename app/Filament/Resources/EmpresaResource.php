@@ -83,7 +83,7 @@ class EmpresaResource extends Resource
     {
         return $table
             ->searchDebounce('750ms')
-            ->searchPlaceholder('Buscar (ID, Nome)')
+            ->searchPlaceholder('Buscar (Cod Dominio, Nome, CNPJ)')
             ->recordUrl(null)
             ->defaultSort('sync', 'desc')
             ->columns([
@@ -92,7 +92,7 @@ class EmpresaResource extends Resource
                     ->searchable(),
                 TextColumn::make('razao_emp')
                     ->label('Nome da empresa')
-                    ->limit(50)
+                    ->limit(40)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
 
@@ -105,7 +105,8 @@ class EmpresaResource extends Resource
                     })
                     ->searchable(),
                 TextColumn::make('cgce_emp')
-                    ->label('CNPJ'),
+                    ->label('CNPJ')
+                    ->searchable(),
                 TextColumn::make('iest_emp')
                     ->label('IE'),
                 TextColumn::make('update_at')
